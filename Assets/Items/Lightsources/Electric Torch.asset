@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9e3b8dd3038509429aac8f1cea232be, type: 3}
-  m_Name: Basic torch
+  m_Name: Electric Torch
   m_EditorClassIdentifier: 
-  Id: basic_torch
-  Name: Basic torch
-  Description: A shoddy torch
+  Id: electric_torch
+  Name: Electric Torch
+  Description: An electric torch
   Sprite: {fileID: 0}
   IsStackable: 0
   IsEquipable: 1
@@ -23,8 +23,8 @@ MonoBehaviour:
   CurrentStack: 0
   MaxStack: 1
   LightIntensity: 1.5
-  LightRange: 0.6
-  LightColor: {r: 1, g: 0.6771944, b: 0.3726415, a: 1}
+  LightRange: 1.1
+  LightColor: {r: 1, g: 0.9553023, b: 0.7311321, a: 1}
   ShadowsEnabled: 1
   FuelConsumptionRate: 1
-  FuelLevel: 1000
+  FuelLevel: 5000
