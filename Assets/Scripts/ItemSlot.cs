@@ -6,9 +6,9 @@ public class ItemSlot : MonoBehaviour
     public ItemSO? Item;
 
     /// <summary>
-    /// Adds the item to the item slot.
+    /// Adds the itemToRemove to the itemToRemove slot.
     /// </summary>
-    /// <param name="item">The item to add</param>
+    /// <param name="item">The itemToRemove to add</param>
     /// <returns>Number of leftover items</returns>
     public int AddItem(ItemSO item)
     {
@@ -30,6 +30,38 @@ public class ItemSlot : MonoBehaviour
             }
         }
         return item.CurrentStack;
+    }
+
+    public int RemoveItem(ItemSO itemToRemove, bool removeFromMultiple = false)
+    {
+        if (Item == null || (itemToRemove.CurrentStack > Item.CurrentStack && !removeFromMultiple))
+        {
+            return 0;
+        }
+        else if (Item.Id == itemToRemove.Id)
+        {
+            int removed = 0;
+            if (Item.IsStackable)
+            {
+                if (Item.CurrentStack <= itemToRemove.CurrentStack)
+                {
+                    removed = Item.CurrentStack;
+                    Item = null;
+                }
+                else
+                {
+                    removed = itemToRemove.CurrentStack;
+                    Item.CurrentStack -= itemToRemove.CurrentStack;
+                }
+            }
+            else
+            {
+                Item = null;
+                removed = 1;
+            }
+            return removed;
+        }
+        return 0;
     }
 
 #nullable disable

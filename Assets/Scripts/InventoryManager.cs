@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -6,10 +8,10 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private List<ItemSlot> ItemSlots = new();
 
     /// <summary>
-    /// Adds the item to the first available item slot.
+    /// Adds the itemToRemove to the first available itemToRemove slot.
     /// </summary>
     /// <param name="item">Item to add</param>
-    /// <returns>Leftover item number, that did not fit in the inventory</returns>
+    /// <returns>Leftover itemToRemove number, that did not fit in the inventory</returns>
     public int AddItem(ItemSO item)
     {
         for (int i = 0; i < ItemSlots.Count; i++)
@@ -24,7 +26,26 @@ public class InventoryManager : MonoBehaviour
         return item.CurrentStack;
     }
 
-    public int RemoveItem(ItemSO item)
+    public bool RemoveItem(ItemSO itemToRemove)
     {
+        var numberOfItems = ItemSlots.Where(slot => slot.Item != null && slot.Item.Id == itemToRemove.Id).Sum(slot => slot.Item.CurrentStack);
+        if (numberOfItems < itemToRemove.CurrentStack)
+        {
+            return false;
+        }
+        for (int i = 0; i < ItemSlots.Count; i++)
+        {
+            var removed = ItemSlots[i].RemoveItem(itemToRemove, true);
+            itemToRemove.CurrentStack -= removed;
+            if (removed > 0 && itemToRemove.CurrentStack == 0)
+            {
+                return true;
+            }
+        }
+        if (itemToRemove.CurrentStack < 0)
+        {
+            throw new System.Exception("Somehow more items got removed than what was available!");
+        }
+        return false;
     }
 }
