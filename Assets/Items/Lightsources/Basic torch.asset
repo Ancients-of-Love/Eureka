@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e3b8dd3038509429aac8f1cea232be, type: 3}
+  m_Name: Basic torch
+  m_EditorClassIdentifier: 
+  Id: basic_torch
+  Name: Basic torch
+  Description: A shoddy torch
+  Sprite: {fileID: 0}
+  IsStackable: 0
+  IsEquipable: 1
+  IsPlayerNameable: 0
+  PlayerName: 
+  CurrentStack: 0
+  MaxStack: 1
+  LightIntensity: 1.5
+  LightRange: 1
+  LightColor: {r: 0.94509804, g: 0.7647059, b: 0.39607844, a: 1}
+  ShadowsEnabled: 0
+  LightFlickerIntensity: 0
+  LightFlickerSpeed: 0
+  LightFlickerRange: 0
+  FuelConsumptionRate: 1
+  FuelLevel: 100
