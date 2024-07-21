@@ -32,9 +32,15 @@ public class ItemSlot : MonoBehaviour
         return item.CurrentStack;
     }
 
-    public int RemoveItem(ItemSO itemToRemove, bool removeFromMultiple = false)
+    /// <summary>
+    /// Removes the itemToRemove from the slot.
+    /// </summary>
+    /// <param name="itemToRemove">Item to remove</param>
+    /// <param name="removeIfMoreThanCurrentStack">Flag if we want to remove items even if it is more than the current stack</param>
+    /// <returns>Number of items removed</returns>
+    public int RemoveItem(ItemSO itemToRemove, bool removeIfMoreThanCurrentStack = false)
     {
-        if (Item == null || (itemToRemove.CurrentStack > Item.CurrentStack && !removeFromMultiple))
+        if (Item == null || (itemToRemove.CurrentStack > Item.CurrentStack && !removeIfMoreThanCurrentStack))
         {
             return 0;
         }
