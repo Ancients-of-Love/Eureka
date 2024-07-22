@@ -107,7 +107,7 @@ public class GridManager : MonoBehaviour
         Vector3 mousePosition = new(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector2 position = new(Mathf.Round(worldPosition.x), Mathf.Round(worldPosition.y));
-        List<Tile> tiles = GetTileOrNeighboursBySize(position, SelectSize);
+        List<Tile> tiles = GetTileOrNeighboursBySize(position, new Vector2(2, 2));
         return tiles;
     }
 
