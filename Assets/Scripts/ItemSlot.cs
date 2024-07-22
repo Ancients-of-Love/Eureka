@@ -17,6 +17,7 @@ public class ItemSlot : MonoBehaviour
         if (Item == null)
         {
             Item = item;
+            ItemCount = addItemCount;
             return 0;
         }
         else if (Item.Id == item.Id)
@@ -28,6 +29,11 @@ public class ItemSlot : MonoBehaviour
                 {
                     ItemCount = Item.MaxStack;
                     return futureStack - Item.MaxStack;
+                }
+                else
+                {
+                    ItemCount = futureStack;
+                    return 0;
                 }
             }
         }
