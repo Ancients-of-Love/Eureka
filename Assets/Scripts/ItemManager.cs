@@ -8,11 +8,6 @@ public class ItemManager : MonoBehaviour, IPickupable
     public float PickUpDistance = 0.1f;
     public bool Move;
 
-    // Start is called before the first frame update
-    private void Start()
-    {
-    }
-
     // Update is called once per frame
     private void Update()
     {
