@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class ItemPrefabManager : MonoBehaviour
@@ -21,7 +19,12 @@ public class ItemPrefabManager : MonoBehaviour
 
     public GameObject SpawnItemById(string id, Vector3 location)
     {
-        Object prefab = AssetDatabase.LoadAssetAtPath($"Assets/Prefabs/Items/{id}.prefab", typeof(GameObject));
+        var prefab = Resources.Load($"Prefabs/Items/{id}");
         return Instantiate(prefab, location, Quaternion.identity, null) as GameObject;
+    }
+
+    public void SpawnTest()
+    {
+        SpawnItemById("basic_torch", new Vector3(0, 0, 0));
     }
 }
