@@ -11,7 +11,6 @@ public class ItemSO : ScriptableObject
     public bool IsEquipable = false;
     public bool IsPlayerNameable = false;
     public string PlayerName = string.Empty;
-    public int CurrentStack = 0;
     public int MaxStack = 99;
     public bool IsResearched = false;
 }

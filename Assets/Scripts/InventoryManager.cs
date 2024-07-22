@@ -24,44 +24,46 @@ public class InventoryManager : MonoBehaviour
     /// Adds the itemToRemove to the first available itemToRemove slot.
     /// </summary>
     /// <param name="item">Item to add</param>
+    /// <param name="addItemCount">Number of items to add</param>
     /// <returns>Leftover itemToRemove number, that did not fit in the inventory</returns>
-    public int AddItem(ItemSO item)
+    public int AddItem(ItemSO item, int addItemCount)
     {
         for (int i = 0; i < ItemSlots.Count; i++)
         {
-            int leftover = ItemSlots[i].AddItem(item);
+            int leftover = ItemSlots[i].AddItem(item, addItemCount);
             if (leftover == 0)
             {
                 return 0;
             }
-            item.CurrentStack = leftover;
+            addItemCount = leftover;
         }
-        return item.CurrentStack;
+        return addItemCount;
     }
 
     /// <summary>
     /// Removes the itemToRemove from the inventory.
     /// </summary>
     /// <param name="itemToRemove">Item to remove</param>
+    /// <param name="removeItemCount">Number of items to remove</param>
     /// <returns>True if successfully removed, false if could not remove</returns>
     /// <exception cref="System.Exception">Throws exception if we removed more items than available</exception>
-    public bool RemoveItem(ItemSO itemToRemove)
+    public bool RemoveItem(ItemSO itemToRemove, int removeItemCount)
     {
-        var numberOfItems = ItemSlots.Where(slot => slot.Item != null && slot.Item.Id == itemToRemove.Id).Sum(slot => slot.Item.CurrentStack);
-        if (numberOfItems < itemToRemove.CurrentStack)
+        var numberOfItems = ItemSlots.Where(slot => slot.Item != null && slot.Item.Id == itemToRemove.Id).Sum(slot => slot.ItemCount);
+        if (numberOfItems < removeItemCount)
         {
             return false;
         }
         for (int i = 0; i < ItemSlots.Count; i++)
         {
-            var removed = ItemSlots[i].RemoveItem(itemToRemove, true);
-            itemToRemove.CurrentStack -= removed;
-            if (removed > 0 && itemToRemove.CurrentStack == 0)
+            var removed = ItemSlots[i].RemoveItem(itemToRemove, removeItemCount, true);
+            removeItemCount -= removed;
+            if (removed > 0 && removeItemCount == 0)
             {
                 return true;
             }
         }
-        if (itemToRemove.CurrentStack < 0)
+        if (removeItemCount < 0)
         {
             throw new System.Exception("Somehow more items got removed than what was available!");
         }
@@ -87,8 +89,8 @@ public class InventoryManager : MonoBehaviour
         }
         if (from.Item.Id == to.Item.Id)
         {
-            int leftover = to.AddItem(from.Item);
-            from.Item.CurrentStack = leftover;
+            int leftover = to.AddItem(from.Item, from.ItemCount);
+            from.ItemCount = leftover;
             if (leftover == 0)
             {
                 from.Item = null;
