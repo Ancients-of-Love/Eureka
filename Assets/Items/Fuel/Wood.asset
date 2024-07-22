@@ -22,4 +22,5 @@ MonoBehaviour:
   PlayerName: 
   CurrentStack: 0
   MaxStack: 99
+  IsResearched: 1
   BurnTime: 10
