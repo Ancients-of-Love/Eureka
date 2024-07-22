@@ -101,4 +101,22 @@ public class InventoryManager : MonoBehaviour
             (to.Item, from.Item) = (from.Item, to.Item);
         }
     }
+
+    /// <summary>
+    /// Checks if the inventory has enough items.
+    /// </summary>
+    /// <param name="items">Items to check</param>
+    /// <returns>True if it has enough items, false if anything's missing.</returns>
+    public bool HasEnoughItems(List<ItemAmount> items)
+    {
+        foreach (var item in items)
+        {
+            var numberOfItems = ItemSlots.Where(slot => slot.Item != null && slot.Item.Id == item.Item.Id).Sum(slot => slot.ItemCount);
+            if (numberOfItems < item.Amount)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
