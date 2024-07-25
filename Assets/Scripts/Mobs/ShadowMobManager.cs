@@ -6,9 +6,16 @@ public class ShadowMobManager : MonoBehaviour
 {
     public bool IsMoving = false;
     public float Speed = 0.05f;
-    public bool IsSpooked = false;
     public bool IsDead = false;
     public float Alpha = 1f;
+    public bool IsPlayerReachable = false;
+    public float LifeTime = 10f;
+
+    private void Update()
+    {
+        // TODO: Check if the player is reachable (is on Tile with more than 0 darkness)
+        // TODO: Use the LifeTime variable to destroy the mob after a certain amount of time (when timer is implemented)
+    }
 
     private void FixedUpdate()
     {
@@ -30,11 +37,19 @@ public class ShadowMobManager : MonoBehaviour
             var playerTransform = GameObject.Find("Player").transform;
             transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, (-Speed - Time.fixedDeltaTime) / 2f);
         }
-        else if (IsMoving && !IsSpooked)
+        else if (IsMoving && IsPlayerReachable)
         {
             // Move towards the player
             var playerTransform = GameObject.Find("Player").transform;
             transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, Speed + Time.fixedDeltaTime);
+        }
+        else if (IsMoving && !IsPlayerReachable)
+        {
+            // Add a timer to delay changes in direction
+            // Randomly move around
+            var randomX = Random.Range(-1f, 1f);
+            var randomY = Random.Range(-1f, 1f);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + randomX, transform.position.y + randomY, transform.position.z), Speed + Time.fixedDeltaTime);
         }
     }
 
