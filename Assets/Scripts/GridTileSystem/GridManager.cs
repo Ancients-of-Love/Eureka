@@ -2,7 +2,7 @@ using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridManager : MonoBehaviour
+public class GridManager : Singleton<GridManager>
 {
     [BoxGroup("Layout")]
     [SerializeField]
@@ -20,7 +20,7 @@ public class GridManager : MonoBehaviour
     private List<Tile> lastHoveredTiles = null;
     private List<Tile> currentHoveredTiles = null;
 
-    private void Awake()
+    private void Start()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -107,7 +107,7 @@ public class GridManager : MonoBehaviour
         Vector3 mousePosition = new(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane);
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector2 position = new(Mathf.Round(worldPosition.x), Mathf.Round(worldPosition.y));
-        List<Tile> tiles = GetTileOrNeighboursBySize(position, SelectSize);
+        List<Tile> tiles = GetTileOrNeighboursBySize(position, new Vector2(2, 2));
         return tiles;
     }
 

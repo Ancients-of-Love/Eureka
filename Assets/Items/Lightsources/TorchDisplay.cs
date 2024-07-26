@@ -10,6 +10,11 @@ public class TorchDisplay : MonoBehaviour
     [SerializeField] private float FuelConsumptionRate;
     [SerializeField] private float FuelLevel;
 
+    [SerializeField] private Timer Timer;
+
+    private bool LightToggle = false;
+    private bool ReloadToggle = false;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -20,22 +25,12 @@ public class TorchDisplay : MonoBehaviour
         Light.shadowsEnabled = Item.ShadowsEnabled;
         FuelConsumptionRate = Item.FuelConsumptionRate;
         FuelLevel = Item.FuelLevel;
+        Timer = new(FuelLevel);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (FuelLevel <= 0 || !LightOnOverride)
-        {
-            ToggleLight(false);
-        }
-        else if (FuelLevel > 0 && !LightOn && LightOnOverride)
-        {
-            ToggleLight(true);
-        }
-        if (FuelLevel > 0 && LightOn && LightOnOverride)
-        {
-            FuelLevel -= FuelConsumptionRate;
-        }
+        HandleLighting();
     }
 
     private void ToggleLight(bool toggleOn)
@@ -57,6 +52,43 @@ public class TorchDisplay : MonoBehaviour
             Light.pointLightOuterRadius = Item.LightRange * 5f;
             Light.shadowsEnabled = Item.ShadowsEnabled;
             LightOn = true;
+        }
+    }
+
+    private void HandleLighting()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            LightToggle = !LightToggle;
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ReloadToggle = !ReloadToggle;
+        }
+
+        if (ReloadToggle)
+        {
+            if (!Timer.AddTime(1f * Time.deltaTime * 10f))
+            {
+                ReloadToggle = false;
+            }
+        }
+
+        if (LightToggle)
+        {
+            if (!Timer.Tick(FuelConsumptionRate * Time.deltaTime))
+            {
+                ToggleLight(true);
+            }
+            else
+            {
+                ToggleLight(false);
+            }
+        }
+        else
+        {
+            ToggleLight(false);
         }
     }
 }
