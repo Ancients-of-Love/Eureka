@@ -62,6 +62,7 @@ public class ItemSlot : MonoBehaviour
                 {
                     removed = ItemCount;
                     Item = null;
+                    ItemCount = 0;
                 }
                 else
                 {

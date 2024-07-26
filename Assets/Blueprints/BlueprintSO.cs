@@ -1,13 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-[Serializable]
-public struct ItemAmount
-{
-    public ItemSO Item;
-    public int Amount;
-}
 
 [CreateAssetMenu(fileName = "Blueprint", menuName = "Blueprints/Blueprint", order = 1)]
 public class BlueprintSO : ScriptableObject, IUnlockable

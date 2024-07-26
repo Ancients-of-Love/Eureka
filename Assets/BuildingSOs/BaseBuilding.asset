@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Base Building
   Description: The absolute base building for testing
+  Cost:
+  - Item: {fileID: 11400000, guid: 26c34a9c4292ba2488fd5ff9f366e2f6, type: 2}
+    Amount: 2
   Sprite: {fileID: 21300000, guid: ff29f174087353e4691c760ecc665b03, type: 3}
   TileOccupationSize: {x: 2, y: 2}
-  TileOccupationPosition: {x: 0, y: 0}
+  TileOccupationPosition: {x: 0.5, y: 0.5}

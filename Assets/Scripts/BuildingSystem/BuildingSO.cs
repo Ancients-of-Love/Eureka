@@ -17,7 +17,7 @@ public class BuildingSO : ScriptableObject
 
     [BoxGroup("Base informations")]
     [Label("Item Cost Of Building")]
-    public List<Cost> Cost;
+    public List<ItemAmount> Cost;
 
     [BoxGroup("Base informations")]
     [Label("Sprite of building")]

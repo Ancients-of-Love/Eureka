@@ -83,8 +83,7 @@ public class InventoryManager : MonoBehaviour
         }
         if (to.Item == null)
         {
-            to.Item = from.Item;
-            from.Item = null;
+            (to.Item, from.Item) = (from.Item, null);
             return;
         }
         if (from.Item.Id == to.Item.Id)
