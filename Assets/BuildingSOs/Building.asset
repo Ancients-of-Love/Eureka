@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f801e1a10cadc394fbbce4b3e4fd9b9e, type: 3}
   m_Name: Building
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
-  Cost: []
-  Sprite: {fileID: 0}
-  TileOccupationSize: {x: 0, y: 0}
-  TileOccupationPosition: {x: 0, y: 0}
+  Name: GitBuilding
+  Description: GitBuilding
+  Cost:
+  - Item: {fileID: 11400000, guid: 26c34a9c4292ba2488fd5ff9f366e2f6, type: 2}
+    Amount: 1
+  Sprite: {fileID: 21300000, guid: 005888ede18a58e4db8d069cfa3007cb, type: 3}
+  TileOccupationSize: {x: 3, y: 3}
+  TileOccupationPosition: {x: 1, y: 1}
