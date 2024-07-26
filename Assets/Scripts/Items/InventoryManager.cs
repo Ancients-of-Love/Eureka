@@ -118,4 +118,13 @@ public class InventoryManager : MonoBehaviour
         }
         return true;
     }
+
+    public bool IsInventoryFull(List<ItemAmount> resultItem)
+    {
+        if (resultItem.Count >= ItemSlots.Count(x => x.Item == null))
+        {
+            return true;
+        }
+        return false;
+    }
 }
