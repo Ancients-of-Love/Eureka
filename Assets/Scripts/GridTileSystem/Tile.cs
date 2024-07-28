@@ -40,24 +40,6 @@ public class Tile : MonoBehaviour
         IsOnCamera = true;
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        if (!IsOnCamera)
-        {
-            return;
-        }
-
-        if (IsHovering)
-        {
-            SpriteRenderer.enabled = true;
-        }
-        else
-        {
-            SpriteRenderer.enabled = false;
-        }
-    }
-
     public void DestoryTile()
     {
         DestroyImmediate(gameObject);

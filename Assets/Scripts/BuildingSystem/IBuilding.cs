@@ -6,6 +6,7 @@ public interface IBuilding
 {
     public Vector2 Size { get; }
     public Vector2 Offset { get; }
+    public bool IsActive { get; }
 
     public Vector3 GetBuildingPosition();
 
