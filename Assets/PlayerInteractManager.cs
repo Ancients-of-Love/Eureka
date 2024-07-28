@@ -11,7 +11,12 @@ public class PlayerInteractManager : MonoBehaviour
     private List<IBuilding> InRangeOfBuildings = new();
     private IBuilding ClosestBuilding;
     private float ClosestBuildingDistance = Mathf.Infinity;
-    private GameObject Player;
+    public GameObject Player;
+
+    [SerializeField]
+    private GameObject InventoryUIPanel;
+
+    private bool IsInventoryOpen = false;
 
     private void Awake()
     {
@@ -31,6 +36,11 @@ public class PlayerInteractManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            InventoryUIPanel.SetActive(IsInventoryOpen = !IsInventoryOpen);
+        }
+
         if (!FindClosestBuilding())
         {
             return;

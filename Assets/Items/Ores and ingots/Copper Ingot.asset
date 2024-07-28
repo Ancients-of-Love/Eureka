@@ -15,10 +15,10 @@ MonoBehaviour:
   Id: copper_ingot
   Name: Copper Ingot
   Description: An ingot made of copper
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 21300000, guid: 5f4fb298c0dae464e81e29aa6e2f7145, type: 3}
   IsStackable: 1
   IsEquipable: 0
   IsPlayerNameable: 0
   PlayerName: 
-  CurrentStack: 0
   MaxStack: 99
+  IsResearched: 0

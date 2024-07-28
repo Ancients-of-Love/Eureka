@@ -7,11 +7,25 @@ public class ItemManager : MonoBehaviour, IPickupable
     public float Speed = 0.5f;
     public float PickUpDistance = 0.1f;
     public bool Move;
+    public bool IsPickupable = true;
+
+    private SpriteRenderer SpriteRenderer;
+    private TMPro.TextMeshProUGUI UITextMeshPro;
+
+    private void Awake()
+    {
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+        UITextMeshPro = GetComponentInChildren<TMPro.TextMeshProUGUI>();
+    }
 
     // Update is called once per frame
     private void Update()
     {
-        if (Vector3.Distance(transform.position, GameObject.FindWithTag("Player").transform.position) < PickUpDistance)
+        if (UITextMeshPro != null)
+        {
+            UITextMeshPro.text = Quantity.ToString();
+        }
+        if (Vector3.Distance(transform.position, GameObject.FindWithTag("Player").transform.position) < PickUpDistance && IsPickupable)
         {
             OnPickup();
         }
@@ -19,16 +33,20 @@ public class ItemManager : MonoBehaviour, IPickupable
 
     private void FixedUpdate()
     {
-        if (Move)
+        if (Move && IsPickupable)
         {
             transform.position = Vector3.MoveTowards(transform.position, GameObject.FindWithTag("Player").transform.position, Speed * Time.fixedDeltaTime);
             Speed += 0.1f;
         }
     }
 
+    public void SetQuantity(int quantity)
+    {
+        Quantity = quantity;
+    }
+
     public int OnPickup()
     {
-        Debug.Log("Item picked up");
         var itemsLeftOver = InventoryManager.Instance.AddItem(Item, Quantity);
         if (itemsLeftOver > 0)
         {
@@ -53,6 +71,10 @@ public class ItemManager : MonoBehaviour, IPickupable
         {
             Move = false;
             Speed = 0.5f;
+        }
+        if (!IsPickupable)
+        {
+            IsPickupable = true;
         }
     }
 }
