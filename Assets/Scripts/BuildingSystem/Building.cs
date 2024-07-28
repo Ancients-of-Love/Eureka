@@ -39,7 +39,6 @@ public abstract class Building : MonoBehaviour, IBuilding
         RenderBuilding();
     }
 
-    //PILL
     private void InitializeBuilding()
     {
         if (BuildingSO == null)
@@ -74,12 +73,10 @@ public abstract class Building : MonoBehaviour, IBuilding
 
     public abstract void InteractWithBuilding();
 
-    public abstract Vector3 GetBuildingPosition();
-
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.layer == 7)
-        {
+       {
             PlayerInteractManager.Instance.AddNearBuilding(this);
         }
     }
@@ -120,5 +117,10 @@ public abstract class Building : MonoBehaviour, IBuilding
         OccupiedTiles.Clear();
 
         Destroy(gameObject);
+    }
+
+    public virtual Vector3 GetBuildingPosition()
+    {
+        return transform.position;
     }
 }
