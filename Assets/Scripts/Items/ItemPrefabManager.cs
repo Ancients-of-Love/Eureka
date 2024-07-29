@@ -17,14 +17,17 @@ public class ItemPrefabManager : MonoBehaviour
         }
     }
 
-    public GameObject SpawnItemById(string id, Vector3 location)
+    public GameObject SpawnItemById(string id, int quantity, Vector3 location)
     {
         var prefab = Resources.Load($"Prefabs/Items/{id}");
-        return Instantiate(prefab, location, Quaternion.identity, null) as GameObject;
+        var Item = Instantiate(prefab, location, Quaternion.identity, null) as GameObject;
+        Item.GetComponent<ItemManager>().SetQuantity(quantity);
+        Item.GetComponent<ItemManager>().IsPickupable = false;
+        return Item;
     }
 
     public void SpawnTest()
     {
-        SpawnItemById("basic_torch", new Vector3(0, 0, 0));
+        SpawnItemById("basic_torch", 1, new Vector3(0, 0, 0));
     }
 }

@@ -4,7 +4,6 @@ public class TestBuilding : Building
 {
     [SerializeField]
     private float Cooldown = 0f;
-
     private Timer Timer;
 
     private new void Start()

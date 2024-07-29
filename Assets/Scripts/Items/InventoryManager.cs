@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private List<ItemSlot> ItemSlots = new();
+    [SerializeField] public List<ItemSlot> ItemSlots = new();
     public static InventoryManager Instance;
 
     private void Awake()
@@ -84,6 +84,7 @@ public class InventoryManager : MonoBehaviour
         if (to.Item == null)
         {
             (to.Item, from.Item) = (from.Item, null);
+            (to.ItemCount, from.ItemCount) = (from.ItemCount, 0);
             return;
         }
         if (from.Item.Id == to.Item.Id)
@@ -98,6 +99,7 @@ public class InventoryManager : MonoBehaviour
         else
         {
             (to.Item, from.Item) = (from.Item, to.Item);
+            (to.ItemCount, from.ItemCount) = (from.ItemCount, to.ItemCount);
         }
     }
 

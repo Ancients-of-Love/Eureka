@@ -15,13 +15,13 @@ MonoBehaviour:
   Id: basic_torch
   Name: Basic torch
   Description: A shoddy torch
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 21300000, guid: 59777ea37ac69024085ee88964dc4e8c, type: 3}
   IsStackable: 0
   IsEquipable: 1
   IsPlayerNameable: 0
   PlayerName: 
-  CurrentStack: 0
   MaxStack: 1
+  IsResearched: 0
   LightIntensity: 1.5
   LightRange: 0.6
   LightColor: {r: 1, g: 0.6771944, b: 0.3726415, a: 1}
