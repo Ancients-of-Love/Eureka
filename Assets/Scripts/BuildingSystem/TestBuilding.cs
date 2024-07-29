@@ -4,6 +4,7 @@ public class TestBuilding : Building
 {
     [SerializeField]
     private float Cooldown = 0f;
+
     private Timer Timer;
 
     private new void Start()
@@ -19,10 +20,5 @@ public class TestBuilding : Building
             return;
         }
         Debug.Log($"Én a {transform.name} épület vagyok");
-    }
-
-    public override Vector3 GetBuildingPosition()
-    {
-        return transform.position;
     }
 }
