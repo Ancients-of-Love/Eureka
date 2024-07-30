@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6283797938926728579}
   - component: {fileID: 2887248319181465591}
+  - component: {fileID: 2582666332732074731}
   m_Layer: 0
   m_Name: Torch light
   m_TagString: Untagged
@@ -82,6 +83,29 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!136 &2582666332732074731
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5579457148968543}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 5.055944
+  m_Height: 47.169285
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3304868661443762703
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,3 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Item: {fileID: 11400000, guid: 0f77afbf4b6066c4db447dc033ef44fe, type: 2}
   Light: {fileID: 2887248319181465591}
+  LightOn: 1
+  LightOnOverride: 1
+  FuelConsumptionRate: 0
+  FuelLevel: 0

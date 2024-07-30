@@ -29,13 +29,6 @@ public class GridManager : Singleton<GridManager>
         }
     }
 
-    private void Update()
-    {
-#if DEBUG
-        GetHovering();
-#endif
-    }
-
     /// <summary>
     /// Generates grid by size in settings
     /// </summary>
