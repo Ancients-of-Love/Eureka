@@ -15,12 +15,12 @@ MonoBehaviour:
   Id: copper_ore
   Name: Copper Ore
   Description: Raw copper ore
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 21300000, guid: b8d2766cfb4940e4aab5dab25440367a, type: 3}
   IsStackable: 1
   IsEquipable: 0
   IsPlayerNameable: 0
   PlayerName: 
-  CurrentStack: 0
   MaxStack: 99
+  IsResearched: 0
   SmeltTime: 10
   SmeltedItem: {fileID: 11400000, guid: 41505992eda2a91449eac9d6df5eedc8, type: 2}

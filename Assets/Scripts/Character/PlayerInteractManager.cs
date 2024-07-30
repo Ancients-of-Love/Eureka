@@ -5,12 +5,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerInteractManager : MonoBehaviour
+public class PlayerInteractManager : Singleton<PlayerInteractManager>
 {
-    public static PlayerInteractManager Instance;
-
     private List<IBuilding> InRangeOfBuildings = new();
-    private IBuilding ClosestBuilding;
+    public IBuilding ClosestBuilding;
     private float ClosestBuildingDistance = Mathf.Infinity;
     public GameObject Player;
 
@@ -18,7 +16,13 @@ public class PlayerInteractManager : MonoBehaviour
     private GameObject InventoryUIPanel;
 
     [SerializeField]
+    public GameObject BuildingUIPanel;
+
+    [SerializeField]
     private GameObject PromptUI;
+
+    public ElectricBuilding SelectedAttachingBuilding;
+    public ElectricalBuildingUIManager CurrentActiveBuildingUI;
 
     [BoxGroup("PromptPrefabs")]
     [SerializeField]
@@ -45,17 +49,8 @@ public class PlayerInteractManager : MonoBehaviour
 
     private bool IsInventoryOpen = false;
 
-    private void Awake()
+    private void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.LogWarning("Multiple PlayerInteractManagers found in the scene. Destroying the new one.");
-            Destroy(gameObject);
-        }
         ClosestBuilding = null;
         Player = GameObject.Find("Player");
     }
@@ -76,6 +71,7 @@ public class PlayerInteractManager : MonoBehaviour
         if (InRangeOfBuildings.Count == 0)
         {
             ClosestBuilding = null;
+            ClosestBuildingDistance = Mathf.Infinity;
             return false;
         }
         if (InRangeOfBuildings.Count >= 2)
@@ -83,6 +79,8 @@ public class PlayerInteractManager : MonoBehaviour
             foreach (IBuilding building in InRangeOfBuildings)
             {
                 var distance = Vector3.Distance(building.GetBuildingPosition(), Player.transform.position);
+
+                Debug.Log(distance);
                 if (distance < ClosestBuildingDistance)
                 {
                     ClosestBuildingDistance = distance;
@@ -120,6 +118,12 @@ public class PlayerInteractManager : MonoBehaviour
                 DELUseObject = null;
                 Prompts = new();
             }
+            if (CurrentActiveBuildingUI != null)
+            {
+                CurrentActiveBuildingUI.gameObject.SetActive(false);
+                CurrentActiveBuildingUI = null;
+            }
+            CurrentActiveBuildingUI = null;
             return;
         }
         if (!ClosestBuilding.IsActive)

@@ -15,12 +15,12 @@ MonoBehaviour:
   Id: magical_ore
   Name: Magical Ore
   Description: A mysterious ore. Maybe you can smelt it?
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 21300000, guid: b455ebe2b91721f489a64ad1f744df5c, type: 3}
   IsStackable: 1
   IsEquipable: 0
   IsPlayerNameable: 1
   PlayerName: Mysterious ore
-  CurrentStack: 0
   MaxStack: 99
+  IsResearched: 0
   SmeltTime: 30
   SmeltedItem: {fileID: 11400000, guid: 67c4aad328b3b1541ad2b150920df116, type: 2}
