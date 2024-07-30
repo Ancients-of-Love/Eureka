@@ -1,13 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : Singleton<PlayerMovement>
 {
-    [SerializeField] private CharacterController controller;
+    public CharacterController controller;
     [SerializeField] private float VerticalDirection;
     [SerializeField] private float HorizontalDirection;
-    [SerializeField] private float Speed = 5f;
+    public bool CanMove = true;
+    public float Speed = 5f;
     [SerializeField] private LayerMask GroundLayer;
 
     private Ray2D ray;
@@ -21,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     {
         HorizontalDirection = Input.GetAxisRaw("Horizontal");
         VerticalDirection = Input.GetAxisRaw("Vertical");
-        HandleFlip();
+        HandleFlip(HorizontalDirection);
 
         var hit = Physics2D.Raycast(transform.position, transform.forward, 1f, GroundLayer).transform;
         if (hit && hit != PreviousHit)
@@ -39,20 +42,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (CanMove)
+        {
+            Move();
+        }
+    }
+
+    private void Move()
+    {
         Vector3 direction = new Vector3(HorizontalDirection, VerticalDirection, 0f).normalized;
         controller.Move(Speed * Time.fixedDeltaTime * direction);
     }
 
-    private void HandleFlip()
+    public void HandleFlip(float horizontalDirection)
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (horizontalDirection > 0)
         {
-            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-
-        if (Input.GetKeyUp(KeyCode.A))
+        else if (horizontalDirection < 0)
         {
-            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
     }
 }
