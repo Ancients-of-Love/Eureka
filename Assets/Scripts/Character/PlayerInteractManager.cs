@@ -9,7 +9,12 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
 {
     private List<IBuilding> InRangeOfBuildings = new();
     public IBuilding ClosestBuilding;
-    private float ClosestBuildingDistance = Mathf.Infinity;
+    public List<ResourceNode> InRangeOfResourceNodes = new();
+    public ResourceNode ClosestResourceNode;
+    public float MiningSpeed = 0.8f;
+    public float MiningDistance = 1f;
+    private bool IsFPressed = false;
+    private Timer MiningTimer;
     public GameObject Player;
 
     [SerializeField]
@@ -33,19 +38,22 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
     [BoxGroup("PromptPrefabs")]
     [SerializeField]
     private GameObject FUsePrefab;
+
     private GameObject FUseObject = null;
 
     [BoxGroup("PromptPrefabs")]
     [SerializeField]
     private GameObject LMBUsePrefab;
+
     private GameObject LMBUseObject = null;
 
     [BoxGroup("PromptPrefabs")]
     [SerializeField]
     private GameObject DELUsePrefab;
+
     private GameObject DELUseObject = null;
 
-    private List<GameObject> Prompts = new List<GameObject>();
+    private List<GameObject> Prompts = new();
 
     private bool IsInventoryOpen = false;
 
@@ -53,6 +61,7 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
     {
         ClosestBuilding = null;
         Player = GameObject.Find("Player");
+        MiningTimer = new Timer();
     }
 
     // Update is called once per frame
@@ -64,26 +73,29 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
         }
 
         HandleBuildingInteractions();
+        HandleResourceNodesInteractions();
     }
+
+    #region Building Interactions
 
     private bool FindClosestBuilding()
     {
         if (InRangeOfBuildings.Count == 0)
         {
             ClosestBuilding = null;
-            ClosestBuildingDistance = Mathf.Infinity;
             return false;
         }
         if (InRangeOfBuildings.Count >= 2)
         {
+            float closestBuildingDistance = Mathf.Infinity;
             foreach (IBuilding building in InRangeOfBuildings)
             {
                 var distance = Vector3.Distance(building.GetBuildingPosition(), Player.transform.position);
 
                 Debug.Log(distance);
-                if (distance < ClosestBuildingDistance)
+                if (distance < closestBuildingDistance)
                 {
-                    ClosestBuildingDistance = distance;
+                    closestBuildingDistance = distance;
                     ClosestBuilding = building;
                 }
             }
@@ -152,4 +164,97 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
             ClosestBuilding = null;
         }
     }
+
+    #endregion Building Interactions
+
+    #region Node Interactions
+
+    private bool FindClosestNode()
+    {
+        if (InRangeOfResourceNodes.Count == 0)
+        {
+            ClosestResourceNode = null;
+            return false;
+        }
+        if (InRangeOfResourceNodes.Count >= 2)
+        {
+            float closestDistance = Mathf.Infinity;
+            foreach (ResourceNode resourceNode in InRangeOfResourceNodes)
+            {
+                var distance = Vector3.Distance(resourceNode.GetPosition(), Player.transform.position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    ClosestResourceNode = resourceNode;
+                }
+            }
+        }
+        else
+        {
+            ClosestResourceNode = InRangeOfResourceNodes[0];
+        }
+        return true;
+    }
+
+    public void AddNearResource(ResourceNode resourceNode)
+    {
+        InRangeOfResourceNodes.Add(resourceNode);
+    }
+
+    public void RemoveNearResource(ResourceNode resourceNode)
+    {
+        InRangeOfResourceNodes.Remove(resourceNode);
+    }
+
+    private void HandleResourceNodesInteractions()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            IsFPressed = true;
+            MiningTimer.SetMaxTime(MiningSpeed);
+        }
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            PlayerMovement.Instance.CanMove = true;
+            IsFPressed = false;
+        }
+
+        if (!FindClosestNode())
+        {
+            foreach (GameObject prompt in Prompts)
+            {
+                Destroy(prompt);
+                FUseObject = null;
+                Prompts = new();
+            }
+            PlayerMovement.Instance.CanMove = true;
+
+            return;
+        }
+        if (IsFPressed)
+        {
+            PlayerMovement.Instance.CanMove = false;
+
+            var distance = Vector3.Distance(ClosestResourceNode.GetPosition(), Player.transform.position);
+            var direction = (ClosestResourceNode.GetPosition() - Player.transform.position).normalized;
+
+            if (distance > MiningDistance)
+            {
+                PlayerMovement.Instance.controller.Move(PlayerMovement.Instance.Speed * Time.deltaTime * direction);
+                PlayerMovement.Instance.HandleFlip(direction.x);
+            }
+            else
+            {
+                MiningTimer.Tick(Time.deltaTime);
+                if (MiningTimer.RemainingTime <= 0)
+                {
+                    ClosestResourceNode.TakeDamage(1);
+                    MiningTimer.ResetTimer();
+                }
+            }
+        }
+    }
+
+    #endregion Node Interactions
 }

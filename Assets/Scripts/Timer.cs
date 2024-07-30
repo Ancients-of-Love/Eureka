@@ -12,6 +12,12 @@ public class Timer
         RemainingTime = MaxTime;
     }
 
+    public Timer()
+    {
+        MaxTime = 0f;
+        RemainingTime = 0f;
+    }
+
     public float MaxTime { get; private set; }
     public float RemainingTime { get; private set; }
 
@@ -47,5 +53,15 @@ public class Timer
             return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Sets the MaxTime and RemainingTime to the given time
+    /// </summary>
+    /// <param name="time">Time</param>
+    public void SetMaxTime(float time)
+    {
+        MaxTime = time;
+        RemainingTime = MaxTime;
     }
 }
