@@ -412,11 +412,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: {fileID: 11400000, guid: 26c34a9c4292ba2488fd5ff9f366e2f6, type: 2}
-  Quantity: 5
+  Quantity: 1
   Speed: 0.1
+  DropSpeed: 1
   PickUpDistance: 0.1
   Move: 0
   IsPickupable: 1
+  IsRecentlySpawned: 1
+  GoalPosition: {x: 0, y: 0, z: 0}
 --- !u!135 &1312936192844150811
 SphereCollider:
   m_ObjectHideFlags: 0

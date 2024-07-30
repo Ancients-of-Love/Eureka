@@ -5,9 +5,14 @@ public class ItemManager : MonoBehaviour, IPickupable
     public ItemSO Item;
     public int Quantity;
     public float Speed = 0.5f;
+
+    public float DropSpeed = 1f;
     public float PickUpDistance = 0.1f;
+
     public bool Move;
     public bool IsPickupable = true;
+    public bool IsRecentlySpawned = true;
+    public Vector3 GoalPosition;
 
     private SpriteRenderer SpriteRenderer;
     private TMPro.TextMeshProUGUI UITextMeshPro;
@@ -28,6 +33,15 @@ public class ItemManager : MonoBehaviour, IPickupable
         if (Vector3.Distance(transform.position, GameObject.FindWithTag("Player").transform.position) < PickUpDistance && IsPickupable)
         {
             OnPickup();
+        }
+        if (IsRecentlySpawned)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, GoalPosition, DropSpeed * Time.deltaTime);
+            if (transform.position == GoalPosition)
+            {
+                IsRecentlySpawned = false;
+                IsPickupable = true;
+            }
         }
     }
 
@@ -55,6 +69,13 @@ public class ItemManager : MonoBehaviour, IPickupable
         }
         Destroy(gameObject);
         return 0;
+    }
+
+    public void OnSpawn(Vector3 newPosition)
+    {
+        GoalPosition = newPosition;
+        IsPickupable = false;
+        IsRecentlySpawned = true;
     }
 
     private void OnTriggerEnter(Collider other)
