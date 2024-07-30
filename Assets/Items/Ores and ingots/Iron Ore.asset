@@ -15,12 +15,12 @@ MonoBehaviour:
   Id: iron_ore
   Name: Iron Ore
   Description: Raw iron ore
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 21300000, guid: e3f348564b53f7c4d8655eb10159b91c, type: 3}
   IsStackable: 1
   IsEquipable: 0
   IsPlayerNameable: 0
   PlayerName: 
-  CurrentStack: 0
   MaxStack: 99
+  IsResearched: 0
   SmeltTime: 15
   SmeltedItem: {fileID: 11400000, guid: 8cfb85a73adb86a49b9770c0400c4c47, type: 2}

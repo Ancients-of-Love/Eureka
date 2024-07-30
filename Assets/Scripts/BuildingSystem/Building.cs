@@ -56,9 +56,30 @@ public abstract class Building : MonoBehaviour, IBuilding
         PhysicsBox = GetComponent<BoxCollider>();
         InteractCollider = GetComponent<SphereCollider>();
         OccupiedTiles = new List<Tile>();
-        PhysicsBox.size = Size;
+        if (PhysicsBox != null)
+        {
+            PhysicsBox.size = Size;
+        }
         InteractCollider.radius = Size.x;
-        IsActive = false;
+        IsActive = true;
+    }
+
+    private void LateUpdate()
+    {
+        if (PlayerInteractManager.Instance.ClosestBuilding == null)
+        {
+            SpriteRenderer.color = Color.white;
+            return;
+        }
+
+        if (PlayerInteractManager.Instance.ClosestBuilding == this)
+        {
+            SpriteRenderer.color = Color.yellow;
+        }
+        else
+        {
+            SpriteRenderer.color = Color.white;
+        }
     }
 
     private void RenderBuilding()
@@ -76,7 +97,7 @@ public abstract class Building : MonoBehaviour, IBuilding
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.layer == 7)
-       {
+        {
             PlayerInteractManager.Instance.AddNearBuilding(this);
         }
     }

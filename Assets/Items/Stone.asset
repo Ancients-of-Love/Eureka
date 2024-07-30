@@ -15,10 +15,10 @@ MonoBehaviour:
   Id: stone
   Name: Stone
   Description: It's rock hard
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 21300000, guid: f49e0600fc49da241b40beb75e2b26bc, type: 3}
   IsStackable: 1
   IsEquipable: 0
   IsPlayerNameable: 0
   PlayerName: 
-  CurrentStack: 0
   MaxStack: 99
+  IsResearched: 0

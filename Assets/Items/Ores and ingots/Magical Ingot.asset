@@ -15,10 +15,10 @@ MonoBehaviour:
   Id: magical_ingot
   Name: Magical Ingot
   Description: A mysterious ingot. I wonder what it can do?
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 21300000, guid: a30397674cea1fb4595acc7c85e30b88, type: 3}
   IsStackable: 1
   IsEquipable: 0
   IsPlayerNameable: 1
   PlayerName: Mysterious Ingot
-  CurrentStack: 0
   MaxStack: 99
+  IsResearched: 0

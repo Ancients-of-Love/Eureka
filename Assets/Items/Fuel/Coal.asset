@@ -15,7 +15,7 @@ MonoBehaviour:
   Id: coal
   Name: Coal
   Description: A lump of coal
-  Sprite: {fileID: 21300000, guid: 7448df572f96f09408424636134b3098, type: 3}
+  Sprite: {fileID: 21300000, guid: 245f1f91daa4e5e4da6675965d564d2b, type: 3}
   IsStackable: 1
   IsEquipable: 0
   IsPlayerNameable: 0

@@ -15,12 +15,12 @@ MonoBehaviour:
   Id: gold_ore
   Name: Gold Ore
   Description: Raw gold ore
-  Sprite: {fileID: 0}
+  Sprite: {fileID: 21300000, guid: a00461cb6def14143b86f74458e3cc1e, type: 3}
   IsStackable: 1
   IsEquipable: 0
   IsPlayerNameable: 0
   PlayerName: 
-  CurrentStack: 0
   MaxStack: 99
+  IsResearched: 0
   SmeltTime: 20
   SmeltedItem: {fileID: 11400000, guid: 0eae4ea047d5cad44b4647c72d3ec4e4, type: 2}

@@ -112,6 +112,7 @@ public class BuildManager : Singleton<BuildManager>
             }
         }
         building.BuildBuildingAt(tiles);
+
         CurrentSelectedBuildingPrefab = null;
         Panel.SetActive(true);
     }
