@@ -56,21 +56,23 @@ public class ElectricBuilding : Building
 
             ActiveUI.SetActive(false);
         }
-        if (PlayerInteractManager.Instance.CurrentActiveBuildingUI != null)
+        if (PlayerInteractManager.Instance.CurrentActiveBuildingUI.Count > 0)
         {
-            if (PlayerInteractManager.Instance.CurrentActiveBuildingUI != ActiveUI.GetComponent<ElectricalBuildingUIManager>())
+            if (!PlayerInteractManager.Instance.CurrentActiveBuildingUI.Contains(ActiveUI))
             {
-                PlayerInteractManager.Instance.CurrentActiveBuildingUI.gameObject.SetActive(false);
+                foreach (var UI in PlayerInteractManager.Instance.CurrentActiveBuildingUI)
+                {
+                    UI.SetActive(false);
+                }
                 IsUIActive = true;
-                PlayerInteractManager.Instance.CurrentActiveBuildingUI = ActiveUI.GetComponent<ElectricalBuildingUIManager>();
+                PlayerInteractManager.Instance.CurrentActiveBuildingUI.Add(ActiveUI);
             }
         }
         else
         {
-            PlayerInteractManager.Instance.CurrentActiveBuildingUI = ActiveUI.GetComponent<ElectricalBuildingUIManager>();
+            PlayerInteractManager.Instance.CurrentActiveBuildingUI.Add(ActiveUI);
             IsUIActive = true;
         }
-
         ActiveUI.SetActive(IsUIActive);
     }
 

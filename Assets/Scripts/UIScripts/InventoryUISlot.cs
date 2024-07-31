@@ -15,7 +15,7 @@ public class InventoryUISlot : MonoBehaviour, IPointerClickHandler, IDropHandler
     public TMPro.TextMeshProUGUI UIText;
 
     [SerializeField]
-    private ItemSlot ItemSlotReference;
+    public ItemSlot ItemSlotReference;
 
     private bool empty = true;
     private bool hovering = false;

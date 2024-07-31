@@ -30,7 +30,7 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
     private GameObject PromptUI;
 
     public ElectricBuilding SelectedAttachingBuilding;
-    public ElectricalBuildingUIManager CurrentActiveBuildingUI;
+    public List<GameObject> CurrentActiveBuildingUI = new();
 
     [BoxGroup("PromptPrefabs")]
     [SerializeField]
@@ -133,12 +133,14 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
                 DELUseObject = null;
                 Prompts = new();
             }
-            if (CurrentActiveBuildingUI != null)
+            if (CurrentActiveBuildingUI.Count > 0)
             {
-                CurrentActiveBuildingUI.gameObject.SetActive(false);
-                CurrentActiveBuildingUI = null;
+                foreach (GameObject UI in CurrentActiveBuildingUI)
+                {
+                    UI.SetActive(false);
+                }
             }
-            CurrentActiveBuildingUI = null;
+            CurrentActiveBuildingUI.Clear();
             return;
         }
         if (!ClosestBuilding.IsActive)
@@ -237,6 +239,12 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
 
             return;
         }
+
+        if (EUseObject == null)
+        {
+            Prompts.Add(FUseObject = Instantiate(FUsePrefab, PromptUI.transform));
+        }
+
         if (IsFPressed)
         {
             PlayerMovement.Instance.CanMove = false;

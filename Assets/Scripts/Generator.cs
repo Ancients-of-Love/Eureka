@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class Generator : Building
@@ -27,7 +25,6 @@ public class Generator : Building
 
     public override void InteractWithBuilding()
     {
-        Debug.Log("GENERÁTHNOR");
         IsUIActive = !IsUIActive;
         if (ActiveUI == null)
         {
@@ -39,18 +36,23 @@ public class Generator : Building
 
             ActiveUI.SetActive(false);
         }
-        if (PlayerInteractManager.Instance.CurrentActiveBuildingUI != null)
+        if (PlayerInteractManager.Instance.CurrentActiveBuildingUI.Count > 0)
         {
-            if (PlayerInteractManager.Instance.CurrentActiveBuildingUI != ActiveUI.GetComponent<ElectricalBuildingUIManager>())
+            if (!PlayerInteractManager.Instance.CurrentActiveBuildingUI.Contains(ActiveUI))
             {
-                PlayerInteractManager.Instance.CurrentActiveBuildingUI.gameObject.SetActive(false);
+                foreach (var UI in PlayerInteractManager.Instance.CurrentActiveBuildingUI)
+                {
+                    UI.SetActive(false);
+                }
                 IsUIActive = true;
-                PlayerInteractManager.Instance.CurrentActiveBuildingUI = ActiveUI.GetComponent<ElectricalBuildingUIManager>();
+                PlayerInteractManager.Instance.CurrentActiveBuildingUI.Add(ActiveUI);
+                PlayerInteractManager.Instance.CurrentActiveBuildingUI.Add(GeneratorManagerUI);
             }
         }
         else
         {
-            PlayerInteractManager.Instance.CurrentActiveBuildingUI = ActiveUI.GetComponent<ElectricalBuildingUIManager>();
+            PlayerInteractManager.Instance.CurrentActiveBuildingUI.Add(ActiveUI);
+            PlayerInteractManager.Instance.CurrentActiveBuildingUI.Add(GeneratorManagerUI);
             IsUIActive = true;
         }
 
@@ -107,6 +109,7 @@ public class Generator : Building
                 IsOn = false;
                 FuelLevel = 0;
             }
+            GeneratorManagerUI.
         }
         if (CurrentCapacity > MaxCapacity)
         {
