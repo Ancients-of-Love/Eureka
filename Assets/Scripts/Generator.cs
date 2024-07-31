@@ -109,11 +109,21 @@ public class Generator : Building
                 IsOn = false;
                 FuelLevel = 0;
             }
-            //GeneratorManagerUI.
         }
         if (CurrentCapacity > MaxCapacity)
         {
             IsOn = false;
+        }
+        if (FuelLevel <= 0 && GeneratorManagerUI.GetComponent<GeneratorUIManager>().GeneratorItemInventorySlot.Item != null)
+        {
+            var slot = GeneratorManagerUI.GetComponent<GeneratorUIManager>().GeneratorItemInventorySlot;
+            ItemAmount fuel = new()
+            {
+                Item = slot.Item,
+                Amount = slot.ItemCount,
+            };
+            var usedAmount = GeneratorManager.Instance.AddFuel(fuel);
+            GeneratorManagerUI.GetComponent<GeneratorUIManager>().GeneratorItemInventorySlot.RemoveItem(slot.Item, usedAmount);
         }
 
         Slider.value = FuelLevel / FuelCapacity * 100;
