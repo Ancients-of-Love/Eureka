@@ -24,6 +24,9 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
     public GameObject BuildingUIPanel;
 
     [SerializeField]
+    public GameObject PlayerLeftHand;
+
+    [SerializeField]
     private GameObject PromptUI;
 
     public ElectricBuilding SelectedAttachingBuilding;
@@ -218,6 +221,8 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
         {
             PlayerMovement.Instance.CanMove = true;
             IsFPressed = false;
+            Player.GetComponentInChildren<Animator>().SetBool("IsMining", false);
+            PlayerLeftHand.SetActive(false);
         }
 
         if (!FindClosestNode())
@@ -246,6 +251,8 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
             }
             else
             {
+                Player.GetComponentInChildren<Animator>().SetBool("IsMining", IsFPressed);
+                PlayerLeftHand.SetActive(true);
                 MiningTimer.Tick(Time.deltaTime);
                 if (MiningTimer.RemainingTime <= 0)
                 {
