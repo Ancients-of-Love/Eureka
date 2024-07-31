@@ -20,6 +20,9 @@ public class Generator : Building
     private bool IsUIActive = false;
     private ElectricalBuildingUIManager ElectricalUI = null;
 
+    [SerializeField]
+    private GameObject GeneratorManagerUI;
+
     private List<Tile> CurrentTiles = new();
 
     public override void InteractWithBuilding()
@@ -51,6 +54,7 @@ public class Generator : Building
             IsUIActive = true;
         }
 
+        GeneratorManagerUI.SetActive(IsUIActive);
         ActiveUI.SetActive(IsUIActive);
     }
 
