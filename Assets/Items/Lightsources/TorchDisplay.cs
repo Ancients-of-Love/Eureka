@@ -65,7 +65,7 @@ public class TorchDisplay : MonoBehaviour
 
     private void HandleLighting()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             LightToggle = !LightToggle;
         }
