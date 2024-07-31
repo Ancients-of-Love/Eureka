@@ -2,10 +2,8 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Smelter : MonoBehaviour
+public class Smelter : Building
 {
-    public ItemSlot InputSlot;
-    public ItemSlot FuelSlot;
     public float MaxBurnTime = 100;
     public float CurrentBurnTime = 0;
     public float MaxMoveDistance = 1;
@@ -13,18 +11,33 @@ public class Smelter : MonoBehaviour
     public Timer SmeltTimer;
     public bool IsSmelting = false;
 
+    [SerializeField]
+    private GameObject UIPrefab;
+    private bool IsUIActive = true;
+    private GameObject ActiveUI = null;
+    private SmelterUIManager SmelterUI = null;
+
+    private Animator Animator;
+
     // Start is called before the first frame update
-    private void Start()
+    private new void Start()
     {
+        Animator = GetComponentInChildren<Animator>();
+        base.Start();
         SmeltTimer = new Timer();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (FuelSlot.Item != null)
+        if (SmelterUI == null)
         {
-            AddFuelTime(FuelSlot);
+            return;
+        }
+        Animator.SetBool("IsSmelting", IsSmelting);
+        if (SmelterUI.FuelSlot.Item != null)
+        {
+            AddFuelTime(SmelterUI.FuelSlot);
         }
         if (CurrentBurnTime > 0)
         {
@@ -42,10 +55,10 @@ public class Smelter : MonoBehaviour
 
     private void Smelt()
     {
-        if (InputSlot.Item != null)
+        if (SmelterUI.OreSlot.Item != null)
         {
-            var smeltableItem = InputSlot.Item as SmeltableItemSO;
-            if (smeltableItem != null && smeltableItem.SmeltTime <= CurrentBurnTime)
+            var smeltableItem = SmelterUI.OreSlot.Item as SmeltableItemSO;
+            if (smeltableItem != null && smeltableItem.SmeltTime <= CurrentBurnTime && !IsSmelting)
             {
                 IsSmelting = true;
                 SmeltTimer.SetMaxTime(smeltableItem.SmeltTime);
@@ -53,8 +66,8 @@ public class Smelter : MonoBehaviour
             if (SmeltTimer.RemainingTime <= 0 && IsSmelting)
             {
                 IsSmelting = false;
-                SpawnItem(Output.Id, 1);
-                InputSlot.RemoveItem(smeltableItem, 1);
+                SpawnItem(smeltableItem.SmeltedItem.Id, 1);
+                SmelterUI.OreSlot.RemoveItem(smeltableItem, 1);
             }
         }
         else
@@ -88,5 +101,35 @@ public class Smelter : MonoBehaviour
                 CurrentBurnTime += burnableItem.BurnTime * burnableItemSlot.ItemCount;
             }
         }
+    }
+
+    public override void InteractWithBuilding()
+    {
+        IsUIActive = !IsUIActive;
+        if (ActiveUI == null)
+        {
+            ActiveUI = Instantiate(UIPrefab, PlayerInteractManager.Instance.BuildingUIPanel.transform);
+            SmelterUI = ActiveUI.GetComponent<SmelterUIManager>();
+
+            ActiveUI.SetActive(false);
+        }
+        if (PlayerInteractManager.Instance.CurrentActiveBuildingUI.Count > 0)
+        {
+            if (!PlayerInteractManager.Instance.CurrentActiveBuildingUI.Contains(ActiveUI))
+            {
+                foreach (var UI in PlayerInteractManager.Instance.CurrentActiveBuildingUI)
+                {
+                    UI.SetActive(false);
+                }
+                IsUIActive = true;
+                PlayerInteractManager.Instance.CurrentActiveBuildingUI.Add(ActiveUI);
+            }
+        }
+        else
+        {
+            PlayerInteractManager.Instance.CurrentActiveBuildingUI.Add(ActiveUI);
+            IsUIActive = true;
+        }
+        ActiveUI.SetActive(IsUIActive);
     }
 }

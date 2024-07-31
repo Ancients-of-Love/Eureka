@@ -124,6 +124,7 @@ public class Generator : Building
             };
             var usedAmount = GeneratorManager.Instance.AddFuel(fuel);
             GeneratorManagerUI.GetComponent<GeneratorUIManager>().GeneratorItemInventorySlot.RemoveItem(slot.Item, usedAmount);
+            IsOn = true;
         }
 
         Slider.value = FuelLevel / FuelCapacity * 100;

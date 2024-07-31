@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GeneratorUIManager : MonoBehaviour
+public class SmelterUIManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject InventoryUISlotPrefab;
@@ -15,13 +15,12 @@ public class GeneratorUIManager : MonoBehaviour
     private List<InventoryUISlot> InventoryUISlots;
 
     [SerializeField]
-    private InventoryUISlot GeneratorUISlot;
+    public InventoryUISlot OreUISlot;
+    public ItemSlot OreSlot;
 
     [SerializeField]
-    public ItemSlot GeneratorItemInventorySlot;
-
-    [SerializeField]
-    private MouseFollower MouseFollower;
+    public InventoryUISlot FuelUISlot;
+    public ItemSlot FuelSlot;
 
     [SerializeField]
     private bool SplitStack = false;
@@ -33,19 +32,26 @@ public class GeneratorUIManager : MonoBehaviour
 
     private void Awake()
     {
-        GeneratorUISlot.SetItemSlotReference(GeneratorItemInventorySlot);
-        GeneratorUISlot.OnItemDroppedOn += HandleItemDropped;
-        GeneratorUISlot.OnItemBeginDrag += HandleItemBeginDrag;
-        GeneratorUISlot.OnItemEndDrag += HandleItemEndDrag;
-        GeneratorUISlot.OnMouseEnter += HandleMouseEnter;
-        GeneratorUISlot.OnMouseExit += HandleMouseExit;
+        OreUISlot.SetItemSlotReference(OreSlot);
+        OreUISlot.OnItemDroppedOn += HandleItemDropped;
+        OreUISlot.OnItemBeginDrag += HandleItemBeginDrag;
+        OreUISlot.OnItemEndDrag += HandleItemEndDrag;
+        OreUISlot.OnMouseEnter += HandleMouseEnter;
+        OreUISlot.OnMouseExit += HandleMouseExit;
+
+        FuelUISlot.SetItemSlotReference(FuelSlot);
+        FuelUISlot.OnItemDroppedOn += HandleItemDropped;
+        FuelUISlot.OnItemBeginDrag += HandleItemBeginDrag;
+        FuelUISlot.OnItemEndDrag += HandleItemEndDrag;
+        FuelUISlot.OnMouseEnter += HandleMouseEnter;
+        FuelUISlot.OnMouseExit += HandleMouseExit;
     }
 
     private void OnEnable()
     {
         foreach (var slot in InventoryManager.Instance.ItemSlots)
         {
-            if (slot.Item is BurnableItemSO)
+            if (slot.Item is BurnableItemSO || slot.Item is SmeltableItemSO)
             {
                 var UISlot = Instantiate(InventoryUISlotPrefab, InventoryContentHolder.transform).GetComponent<InventoryUISlot>();
                 UISlot.SetItemSlotReference(slot);
@@ -77,7 +83,7 @@ public class GeneratorUIManager : MonoBehaviour
                 InventoryUISlots.Add(UISlot);
             }
         }
-        MouseFollower.Toggle(false);
+        MouseFollower.Instance.Toggle(false);
     }
 
     private void OnDisable()
@@ -103,51 +109,32 @@ public class GeneratorUIManager : MonoBehaviour
     {
         Debug.Log(slot.name);
 
-        MouseFollower.Toggle(false);
+        MouseFollower.Instance.Toggle(false);
         SelectedItemSlot = null;
     }
 
     private void HandleItemBeginDrag(InventoryUISlot slot)
     {
-        MouseFollower.Toggle(true);
+        MouseFollower.Instance.Toggle(true);
         if (Input.GetMouseButton(0))
         {
-            MouseFollower.SetData(slot.Image.sprite, Int32.Parse(slot.UIText.text));
+            MouseFollower.Instance.SetData(slot.Image.sprite, Int32.Parse(slot.UIText.text));
             SplitStack = false;
         }
         if (Input.GetMouseButton(1))
         {
-            MouseFollower.SetData(slot.Image.sprite, Int32.Parse(slot.UIText.text) / 2);
+            MouseFollower.Instance.SetData(slot.Image.sprite, Int32.Parse(slot.UIText.text) / 2);
             SplitStack = true;
         }
 
-        if (slot == GeneratorUISlot)
-        {
-            SelectedItemSlot = slot.ItemSlotReference;
-            SelectedItem = GeneratorItemInventorySlot.Item;
-            SelectedItemCount = SplitStack ? GeneratorItemInventorySlot.ItemCount : GeneratorItemInventorySlot.ItemCount;
-        }
-
-        if (InventoryUISlots.Contains(slot))
-        {
-            SelectedItemSlot = slot.ItemSlotReference;
-            SelectedItem = SelectedItemSlot.Item;
-            SelectedItemCount = SplitStack ? SelectedItemSlot.ItemCount / 2 : SelectedItemSlot.ItemCount;
-        }
+        SelectedItemSlot = slot.ItemSlotReference;
+        SelectedItem = SelectedItemSlot.Item;
+        SelectedItemCount = SplitStack ? SelectedItemSlot.ItemCount / 2 : SelectedItemSlot.ItemCount;
     }
 
     private void HandleItemDropped(InventoryUISlot slot)
     {
-        var localSlot = new ItemSlot();
-        if (slot == GeneratorUISlot)
-        {
-            localSlot = GeneratorUISlot.ItemSlotReference;
-        }
-        if (InventoryUISlots.Contains(slot))
-        {
-            localSlot = slot.ItemSlotReference;
-        }
-
+        var localSlot = slot.ItemSlotReference;
         if (!SplitStack)
         {
             HandleSwap(SelectedItemSlot, localSlot);
@@ -156,12 +143,12 @@ public class GeneratorUIManager : MonoBehaviour
         {
             HandleSplit(SelectedItemSlot, localSlot);
         }
-        MouseFollower.Toggle(false);
+        MouseFollower.Instance.Toggle(false);
     }
 
     private void HandleSwap(ItemSlot beginSlot, ItemSlot endSlot)
     {
-        if (beginSlot == endSlot)
+        if (beginSlot == endSlot || (endSlot == FuelSlot && !(beginSlot.Item.GetType() == typeof(BurnableItemSO))) || (endSlot == OreSlot && !(beginSlot.Item.GetType() == typeof(SmeltableItemSO))))
         {
             return;
         }
@@ -177,21 +164,12 @@ public class GeneratorUIManager : MonoBehaviour
         var SlotA = beginSlot;
         var SlotB = endSlot;
         Debug.Log("HandleSplit!");
-        if (SelectedItemCount <= 0 || SlotA.Item != SlotB.Item && SlotB.Item != null || beginSlot == endSlot)
+        if (SelectedItemCount <= 0 || SlotA.Item != SlotB.Item && SlotB.Item != null || beginSlot == endSlot || (endSlot == FuelSlot && !(beginSlot.Item.GetType() == typeof(BurnableItemSO))) || (endSlot == OreSlot && !(beginSlot.Item.GetType() == typeof(SmeltableItemSO))))
         {
             return;
         }
 
         SlotA.RemoveItem(SelectedItem, SelectedItemCount);
         SlotB.AddItem(SelectedItem, SelectedItemCount);
-    }
-
-    private void Start()
-    {
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
     }
 }

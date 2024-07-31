@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MouseFollower : MonoBehaviour
+public class MouseFollower : Singleton<MouseFollower>
 {
     [SerializeField]
     private Canvas Canvas;
@@ -8,10 +8,11 @@ public class MouseFollower : MonoBehaviour
     [SerializeField]
     private InventoryUISlot InventoryUISlot;
 
-    private void Awake()
+    private void Start()
     {
         Canvas = transform.GetComponentInParent<Canvas>();
         InventoryUISlot = GetComponentInChildren<InventoryUISlot>();
+        gameObject.SetActive(false);
     }
 
     public void SetData(Sprite sprite, int quantity)
