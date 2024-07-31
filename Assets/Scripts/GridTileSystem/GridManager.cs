@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,9 +15,26 @@ public class GridManager : Singleton<GridManager>
 
     [BoxGroup("Layout")]
     [SerializeField]
+    public int OffsetHeight;
+
+    [BoxGroup("Layout")]
+    [SerializeField]
+    public int OffsetWidth;
+
+    [BoxGroup("Layout")]
+    [SerializeField]
     public Tile Tile;
 
+    [BoxGroup("BaseVector")]
+    [SerializeField]
+    public Vector2 BaseStart;
+
+    [BoxGroup("BaseVector")]
+    [SerializeField]
+    public Vector2 BaseEnd;
+
     public Dictionary<Vector2, Tile> Tiles = new Dictionary<Vector2, Tile>();
+    public Dictionary<Vector2, Tile> BaseBiome = new Dictionary<Vector2, Tile>();
     private List<Tile> lastHoveredTiles = null;
     private List<Tile> currentHoveredTiles = null;
 
@@ -26,14 +44,11 @@ public class GridManager : Singleton<GridManager>
         {
             Tile tile = transform.GetChild(i).GetComponent<Tile>();
             Tiles[new(Mathf.RoundToInt(tile.transform.position.x), Mathf.RoundToInt(tile.transform.position.y))] = tile;
+            tile.Biome = BiomeEnum.Forest;
         }
-    }
 
-    private void Update()
-    {
-#if DEBUG
-        GetHovering();
-#endif
+        GenerateBiomes();
+        GenerateResources();
     }
 
     /// <summary>
@@ -41,23 +56,36 @@ public class GridManager : Singleton<GridManager>
     /// </summary>
     public void GenerateGrid()
     {
-        Vector2 startPosition = new(0 - Width / 2, 0 - Height / 2);
+        Vector2 startPosition = new(0 - Width / 2 + OffsetWidth, 0 - Height / 2 + OffsetHeight);
 
         for (int y = 0; y < Height; y++)
         {
             for (int x = 0; x < Width; x++)
             {
-                Tiles[new Vector2(x, y)] = Instantiate(Tile, new Vector3(startPosition.x + x, startPosition.y + y, 0), Quaternion.identity, transform);
+                var tile = Instantiate(Tile, new Vector3(startPosition.x + x, startPosition.y + y, 0), Quaternion.identity, transform);
+                Tiles[new Vector2(x, y)] = tile;
             }
         }
-
-        GenerateBiomes();
-        GenerateResources();
     }
 
     private void GenerateBiomes()
     {
+        GenerateBaseArea();
         //TODO: IMPLEMENT
+    }
+
+    private void GenerateBaseArea()
+    {
+        for (int y = (int)BaseStart.y; y < BaseEnd.y; y++)
+        {
+            for (int x = (int)BaseStart.x; x < BaseEnd.x; x++)
+            {
+                var tile = Tiles[new Vector2(x, y)];
+                tile.Biome = BiomeEnum.Base;
+                tile.IsBuildAllowed = true;
+                BaseBiome[new Vector2(x, y)] = tile;
+            }
+        }
     }
 
     private void GenerateResources()

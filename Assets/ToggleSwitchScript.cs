@@ -13,7 +13,7 @@ public class ToggleSwitchScript : MonoBehaviour, IPointerClickHandler
 
     private Image Image;
 
-    public bool Toggle = false;
+    public bool Toggle = true;
 
     public event Action<ToggleSwitchScript> ToggleOn, ToggleOff;
 
@@ -21,7 +21,7 @@ public class ToggleSwitchScript : MonoBehaviour, IPointerClickHandler
     {
         Image = GetComponent<Image>();
 
-        Image.sprite = OffSprite;
+        Image.sprite = OnSprite;
     }
 
     public void OnPointerClick(PointerEventData eventData)

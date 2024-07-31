@@ -24,10 +24,13 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
     public GameObject BuildingUIPanel;
 
     [SerializeField]
+    public GameObject PlayerLeftHand;
+
+    [SerializeField]
     private GameObject PromptUI;
 
     public ElectricBuilding SelectedAttachingBuilding;
-    public ElectricalBuildingUIManager CurrentActiveBuildingUI;
+    public List<GameObject> CurrentActiveBuildingUI = new();
 
     [BoxGroup("PromptPrefabs")]
     [SerializeField]
@@ -130,12 +133,14 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
                 DELUseObject = null;
                 Prompts = new();
             }
-            if (CurrentActiveBuildingUI != null)
+            if (CurrentActiveBuildingUI.Count > 0)
             {
-                CurrentActiveBuildingUI.gameObject.SetActive(false);
-                CurrentActiveBuildingUI = null;
+                foreach (GameObject UI in CurrentActiveBuildingUI)
+                {
+                    UI.SetActive(false);
+                }
             }
-            CurrentActiveBuildingUI = null;
+            CurrentActiveBuildingUI.Clear();
             return;
         }
         if (!ClosestBuilding.IsActive)
@@ -218,6 +223,8 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
         {
             PlayerMovement.Instance.CanMove = true;
             IsFPressed = false;
+            Player.GetComponentInChildren<Animator>().SetBool("IsMining", false);
+            PlayerLeftHand.SetActive(false);
         }
 
         if (!FindClosestNode())
@@ -232,6 +239,12 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
 
             return;
         }
+
+        if (EUseObject == null)
+        {
+            Prompts.Add(FUseObject = Instantiate(FUsePrefab, PromptUI.transform));
+        }
+
         if (IsFPressed)
         {
             PlayerMovement.Instance.CanMove = false;
@@ -246,6 +259,8 @@ public class PlayerInteractManager : Singleton<PlayerInteractManager>
             }
             else
             {
+                Player.GetComponentInChildren<Animator>().SetBool("IsMining", IsFPressed);
+                PlayerLeftHand.SetActive(true);
                 MiningTimer.Tick(Time.deltaTime);
                 if (MiningTimer.RemainingTime <= 0)
                 {

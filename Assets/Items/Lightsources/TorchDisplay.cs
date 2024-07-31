@@ -9,6 +9,8 @@ public class TorchDisplay : MonoBehaviour
     [SerializeField] private bool LightOnOverride = true;
     [SerializeField] private float FuelConsumptionRate;
     [SerializeField] private float FuelLevel;
+    [SerializeField] private Animator Animator;
+    [SerializeField] private SphereCollider SphereCollider;
 
     [SerializeField] private Timer Timer;
 
@@ -26,6 +28,7 @@ public class TorchDisplay : MonoBehaviour
         FuelConsumptionRate = Item.FuelConsumptionRate;
         FuelLevel = Item.FuelLevel;
         Timer = new(FuelLevel);
+        Animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -53,6 +56,8 @@ public class TorchDisplay : MonoBehaviour
             Light.shadowsEnabled = Item.ShadowsEnabled;
             LightOn = true;
         }
+        Animator.SetBool("IsOn", LightOn);
+        Light.gameObject.SetActive(LightOn);
     }
 
     private void HandleLighting()

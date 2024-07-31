@@ -13,11 +13,18 @@ public class PlayerMovement : Singleton<PlayerMovement>
     public float Speed = 5f;
     [SerializeField] private LayerMask GroundLayer;
 
+    [SerializeField] private Animator Animator;
+
     private Ray2D ray;
 
     private Transform PreviousHit = null;
 
     [SerializeField] private Tile PlayerTile;
+
+    private void Start()
+    {
+        Animator = GetComponentInChildren<Animator>();
+    }
 
     // Update is called once per frame
     private void Update()
@@ -25,6 +32,7 @@ public class PlayerMovement : Singleton<PlayerMovement>
         HorizontalDirection = Input.GetAxisRaw("Horizontal");
         VerticalDirection = Input.GetAxisRaw("Vertical");
         HandleFlip(HorizontalDirection);
+        Animator.SetFloat("Speed", controller.velocity.magnitude);
 
         var hit = Physics2D.Raycast(transform.position, transform.forward, 1f, GroundLayer).transform;
         if (hit && hit != PreviousHit)
