@@ -2,23 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BlueprintManager : MonoBehaviour
+public class BlueprintManager : Singleton<BlueprintManager>
 {
-    public static BlueprintManager Instance;
     public List<BlueprintSO> Blueprints;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.LogWarning("BlueprintManager instance already exists, destroying the new one.");
-            Destroy(gameObject);
-        }
-    }
 
     public void ResearchItem(ItemSO item)
     {
