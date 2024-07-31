@@ -33,10 +33,24 @@ public class GridManager : Singleton<GridManager>
     [SerializeField]
     public Vector2 BaseEnd;
 
+    [BoxGroup("DarkStart")]
+    public Vector2 DarkStart;
+
+    [BoxGroup("DarkEnd")]
+    public Vector2 DarkEnd;
+
     public Dictionary<Vector2, Tile> Tiles = new Dictionary<Vector2, Tile>();
     public Dictionary<Vector2, Tile> BaseBiome = new Dictionary<Vector2, Tile>();
+    public Dictionary<Vector2, Tile> DarkBiome = new Dictionary<Vector2, Tile>();
     private List<Tile> lastHoveredTiles = null;
     private List<Tile> currentHoveredTiles = null;
+
+    private new void Awake()
+    {
+        base.Awake();
+        DarkStart = new(37, -19);
+        DarkEnd = new(63, 15);
+    }
 
     private void Start()
     {
@@ -71,6 +85,7 @@ public class GridManager : Singleton<GridManager>
     private void GenerateBiomes()
     {
         GenerateBaseArea();
+        GenerateDarkArea();
         //TODO: IMPLEMENT
     }
 
@@ -84,6 +99,21 @@ public class GridManager : Singleton<GridManager>
                 tile.Biome = BiomeEnum.Base;
                 tile.IsBuildAllowed = true;
                 BaseBiome[new Vector2(x, y)] = tile;
+            }
+        }
+    }
+
+    private void GenerateDarkArea()
+    {
+        for (int y = (int)DarkStart.y; y < DarkEnd.y; y++)
+        {
+            for (int x = (int)DarkStart.x; x < DarkEnd.x; x++)
+            {
+                var tile = Tiles[new Vector2(x, y)];
+                tile.Biome = BiomeEnum.Forest;
+                tile.IsBuildAllowed = false;
+                tile.DarknessLevel = 1;
+                DarkBiome[new Vector2(x, y)] = tile;
             }
         }
     }

@@ -1,16 +1,18 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class TorchDisplay : MonoBehaviour
 {
     [SerializeField] private LightEmittingItemSO Item;
     [SerializeField] private Light2D Light;
-    [SerializeField] private bool LightOn = true;
-    [SerializeField] private bool LightOnOverride = true;
+    public bool LightOn = true;
+    public bool LightOnOverride = true;
     [SerializeField] private float FuelConsumptionRate;
     [SerializeField] private float FuelLevel;
     [SerializeField] private Animator Animator;
     [SerializeField] private SphereCollider SphereCollider;
+    public float RemainingFuel;
 
     [SerializeField] private Timer Timer;
 
@@ -34,6 +36,7 @@ public class TorchDisplay : MonoBehaviour
     private void Update()
     {
         HandleLighting();
+        RemainingFuel = Timer.RemainingTime;
     }
 
     private void ToggleLight(bool toggleOn)
