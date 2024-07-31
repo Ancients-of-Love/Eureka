@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 319f2f7098be15e4ba297d43da684afa, type: 3}
+  m_Name: Coal
+  m_EditorClassIdentifier: 
+  Id: coal
+  Name: Coal
+  Description: A lump of coal
+  Sprite: {fileID: 21300000, guid: 245f1f91daa4e5e4da6675965d564d2b, type: 3}
+  IsStackable: 1
+  IsEquipable: 0
+  IsPlayerNameable: 0
+  PlayerName: 
+  MaxStack: 99
+  IsResearched: 0
+  BurnTime: 25

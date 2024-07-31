@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32c53b0a2af67f344af55e6eaabd1959, type: 3}
+  m_Name: ElectricTorchBlueprint
+  m_EditorClassIdentifier: 
+  IsUnlocked: 0
+  RequiredItems:
+  - Item: {fileID: 11400000, guid: 41505992eda2a91449eac9d6df5eedc8, type: 2}
+    Amount: 20
+  - Item: {fileID: 11400000, guid: 0eae4ea047d5cad44b4647c72d3ec4e4, type: 2}
+    Amount: 5
+  - Item: {fileID: 11400000, guid: 67c4aad328b3b1541ad2b150920df116, type: 2}
+    Amount: 5
+  ResultItem:
+  - Item: {fileID: 11400000, guid: 38691c69440cbeb4eb87a92ea9308818, type: 2}
+    Amount: 1
+  CraftingTime: 100
