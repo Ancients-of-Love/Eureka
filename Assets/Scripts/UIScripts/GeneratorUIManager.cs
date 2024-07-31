@@ -170,20 +170,6 @@ public class GeneratorUIManager : MonoBehaviour
         var SlotB = endSlot;
 
         InventoryManager.Instance.MoveItem(SlotA, SlotB);
-
-        /*if (SlotB.Item != null)
-        {
-            var SlotCItem = SlotB.Item;
-            var SlotCItemCount = SlotB.ItemCount;
-            SlotB.AddItem(SelectedItem, SelectedItemCount);
-            SlotA.RemoveItem(SelectedItem, SelectedItemCount);
-            SlotA.AddItem(SlotCItem, SlotCItemCount);
-        }
-        else
-        {
-            SlotB.AddItem(SelectedItem, SelectedItemCount);
-            SlotA.RemoveItem(SelectedItem, SelectedItemCount);
-        }*/
     }
 
     private void HandleSplit(ItemSlot beginSlot, ItemSlot endSlot)

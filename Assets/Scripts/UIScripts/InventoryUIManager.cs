@@ -14,7 +14,7 @@ public class InventoryUIManager : Singleton<InventoryUIManager>
     public List<InventoryUISlot> InventoryUISlotList;
 
     [SerializeField]
-    private MouseFollower MouseFollower;
+    public MouseFollower MouseFollower;
 
     private bool SplitStack = false;
     private int SelectedItemIndex = -1;
