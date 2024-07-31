@@ -12,6 +12,8 @@ public class PlayerMovement : Singleton<PlayerMovement>
     public bool CanMove = true;
     public float Speed = 5f;
     [SerializeField] private LayerMask GroundLayer;
+    private Timer DamageTimer;
+    private TorchDisplay Torch;
 
     [SerializeField] private Animator Animator;
 
@@ -23,7 +25,9 @@ public class PlayerMovement : Singleton<PlayerMovement>
 
     private void Start()
     {
+        Torch = GetComponentInChildren<TorchDisplay>();
         Animator = GetComponentInChildren<Animator>();
+        DamageTimer = new Timer(1f);
     }
 
     // Update is called once per frame
@@ -40,19 +44,53 @@ public class PlayerMovement : Singleton<PlayerMovement>
             PreviousHit = hit;
             PlayerTile = PreviousHit.GetComponent<Tile>();
         }
-
-        if (PlayerTile.DarknessLevel > 0)
+        Debug.Log(PlayerTile.DarknessLevel);
+        if (PlayerTile.DarknessLevel > 0 && (!Torch.LightOn || !Torch.LightOnOverride))
         {
-            //DAMAGE
-            //TIMER DAMAGE AMIKOR MÁSODPERC
+            DamageTimer.Tick(Time.deltaTime);
+            if (DamageTimer.RemainingTime <= 0)
+            {
+                PlayerResourcesManager.Instance.Damage(2f);
+                DamageTimer.ResetTimer();
+            }
         }
+        else if ((PlayerResourcesManager.Instance.CurrentHealth < PlayerResourcesManager.Instance.PlayerMaxHealth) && PlayerTile.DarknessLevel == 0)
+        {
+            DamageTimer.Tick(Time.deltaTime);
+            if (DamageTimer.RemainingTime <= 0)
+            {
+                PlayerResourcesManager.Instance.Heal(2f);
+                DamageTimer.ResetTimer();
+            }
+        }
+        else
+        {
+            DamageTimer.ResetTimer();
+        }
+        HandleMusic();
     }
 
     private void FixedUpdate()
     {
-        if (CanMove)
+        if (CanMove && !PlayerResourcesManager.Instance.IsDead)
         {
             Move();
+        }
+    }
+
+    public void HandleMusic()
+    {
+        if (PlayerTile.DarknessLevel > 0 && Torch.LightOn)
+        {
+            Audio.Instance.PlayIntenseMusic();
+        }
+        else if (PlayerTile.DarknessLevel > 0)
+        {
+            Audio.Instance.PlayDamagingMusic();
+        }
+        else
+        {
+            Audio.Instance.PlayBaseMusic();
         }
     }
 
