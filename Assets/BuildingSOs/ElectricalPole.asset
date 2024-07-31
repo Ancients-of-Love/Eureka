@@ -20,5 +20,5 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: 41505992eda2a91449eac9d6df5eedc8, type: 2}
     Amount: 1
   Sprite: {fileID: 21300000, guid: 86a6b0bdef2a41d45bb56921e8e65042, type: 3}
-  TileOccupationSize: {x: 1, y: 3}
-  TileOccupationPosition: {x: 0, y: 0.5}
+  TileOccupationSize: {x: 1, y: 1}
+  TileOccupationPosition: {x: -0.5, y: -0.5}

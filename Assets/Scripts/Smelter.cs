@@ -13,6 +13,7 @@ public class Smelter : Building
 
     [SerializeField]
     private GameObject UIPrefab;
+
     private bool IsUIActive = true;
     private GameObject ActiveUI = null;
     private SmelterUIManager SmelterUI = null;
@@ -92,13 +93,13 @@ public class Smelter : Building
         {
             if (maxItemCount <= burnableItemSlot.ItemCount)
             {
-                burnableItemSlot.RemoveItem(burnableItem, maxItemCount);
                 CurrentBurnTime += burnableItem.BurnTime * maxItemCount;
+                burnableItemSlot.RemoveItem(burnableItem, maxItemCount);
             }
             else
             {
-                burnableItemSlot.RemoveItem(burnableItem, burnableItemSlot.ItemCount);
                 CurrentBurnTime += burnableItem.BurnTime * burnableItemSlot.ItemCount;
+                burnableItemSlot.RemoveItem(burnableItem, burnableItemSlot.ItemCount);
             }
         }
     }

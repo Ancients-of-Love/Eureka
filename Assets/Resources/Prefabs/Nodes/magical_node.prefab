@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f963177b55093641af3b7dc1312c5df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResourceNodeData: {fileID: 11400000, guid: 4dc85752da6862f419bd7f9f7b948a85, type: 2}
+  ResourceNodeData: {fileID: 11400000, guid: 31dcc65e38c90d747b33577ae4d621e5, type: 2}
   CurrentHealth: 0
   MaxHealth: 0
   MaxMoveDistance: 3
