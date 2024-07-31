@@ -109,7 +109,6 @@ public class Generator : Building
                 IsOn = false;
                 FuelLevel = 0;
             }
-            //GeneratorManagerUI.
         }
         if (CurrentCapacity > MaxCapacity)
         {
