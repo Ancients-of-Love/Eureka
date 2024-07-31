@@ -185,13 +185,4 @@ public class GeneratorUIManager : MonoBehaviour
         SlotA.RemoveItem(SelectedItem, SelectedItemCount);
         SlotB.AddItem(SelectedItem, SelectedItemCount);
     }
-
-    private void Start()
-    {
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-    }
 }

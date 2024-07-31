@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BlueprintManager : Singleton<BlueprintManager>
 {
+    public GameObject ResearchUI;
     public List<BlueprintSO> Blueprints;
 
     public void ResearchItem(ItemSO item)
